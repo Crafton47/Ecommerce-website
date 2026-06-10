@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔐 Login - Vibrant E-Commerce</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('home_page') }}">Home</a></li>
+      <li><a href="{{ url_for('product_page') }}">Products</a></li>
+      <li><a href="{{ url_for('card_page') }}">Cart</a></li>
+      {% if user %}
+        <li><a href="{{ url_for('logout') }}">Logout ({{ user }})</a></li>
+      {% else %}
+        <li><a href="{{ url_for('login_page') }}">Login</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <div class="container">
+    <div class="login-container">
+      <form class="login-form" method="POST" action="{{ url_for('login_page') }}">
+        <h2>🚀 Welcome Back!</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endwith %}
+
+        <div class="form-group">
+          <label for="email">📧 Email:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">🔒 Password:</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+
+        <button type="submit">Login</button>
+
+        <p style="text-align: center; margin-top: 20px; color: #666;">
+          Don't have an account? <a href="{{ url_for('signup_page') }}" style="color: #ff6b6b; text-decoration: none;">Sign up here!</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

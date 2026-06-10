@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🛍️ Products - Vibrant E-Commerce</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('home_page') }}">Home</a></li>
+      <li><a href="{{ url_for('product_page') }}">Products</a></li>
+      <li><a href="{{ url_for('card_page') }}">Cart</a></li>
+      {% if user %}
+        <li><span style="color:white; font-weight:bold; padding: 10px 20px;">👋 {{ user }}</span></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+      {% else %}
+        <li><a href="{{ url_for('login_page') }}">Login</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <div class="container">
+    <section class="products-hero">
+      <div class="products-hero-left">
+        <h2>🌟 Our Amazing Products</h2>
+        <p class="hero-desc">Handpicked products across categories — gadgets, books, groceries and more. Enjoy special
+          deals and fast delivery.</p>
+        <div class="hero-actions">
+          <button data-href="{{ url_for('product_page') }}" onclick="location.href=this.dataset.href"
+            class="cta-btn">Browse All</button>
+          <button data-href="{{ url_for('card_page') }}" onclick="location.href=this.dataset.href"
+            class="cta-outline">View Cart</button>
+        </div>
+      </div>
+      <div class="products-hero-right">
+        <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&auto=format&fit=crop" alt="Products hero" />
+      </div>
+    </section>
+
+    <!-- Currency Converter Widget (powered by Java API) -->
+    <section class="currency-widget">
+      <h3>💱 Currency Converter <span style="font-size:0.75rem;font-weight:400;opacity:0.8">powered by Java</span></h3>
+      <div class="currency-form">
+        <input type="number" id="conv-amount" placeholder="Enter amount in ₹" min="0">
+        <select id="conv-to">
+          <option value="USD">🇺🇸 USD — US Dollar</option>
+          <option value="EUR">🇪🇺 EUR — Euro</option>
+          <option value="GBP">🇬🇧 GBP — British Pound</option>
+          <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+        </select>
+        <button onclick="convertCurrency()" class="cta-btn">Convert</button>
+      </div>
+      <div id="conv-result" class="currency-result"></div>
+    </section>
+
+    <!-- Featured / Available Products Slider -->
+    <section class="available-slides">
+      <h2>🔥 Featured Products</h2>
+      <div class="carousel">
+        <button class="carousel-prev">&#10094;</button>
+        <div class="carousel-track">
+          <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&auto=format&fit=crop" alt="Laptop"></div>
+          <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&auto=format&fit=crop" alt="Phone"></div>
+          <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&auto=format&fit=crop" alt="Speaker"></div>
+          <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&auto=format&fit=crop" alt="Tablet"></div>
+          <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&auto=format&fit=crop" alt="SSD"></div>
+          <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&auto=format&fit=crop" alt="Watch"></div>
+        </div>
+        <button class="carousel-next">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- Grocery Section -->
+    <section class="grocery-section">
+      <div class="grocery-header">
+        <h2>🛒 Groceries</h2>
+      </div>
+      <div class="grocery-grid">
+        <div class="grocery-item">
+          <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop" alt="Rice">
+          <div class="grocery-name">Rice</div>
+          <div class="grocery-category-wrapper">
+              <div class="grocery-category">Staples</div>
+          </div>
+          <div class="grocery-price">₹80</div>
+          <div class="grocery-actions">
+            <button class="add-btn" onclick="addToCart('Rice', 80)">Add to Cart</button>
+            <button class="buy-btn" onclick="buyNow('Rice', 80)">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="grocery-item">
+          <img src="https://images.unsplash.com/photo-1551462147-ff29053bfc14?w=400&auto=format&fit=crop" alt="Pasta">
+          <div class="grocery-name">Pasta</div>
+          <div class="grocery-category-wrapper">
+              <div class="grocery-category">Staples</div>
+          </div>
+          <div class="grocery-price">₹120</div>
+          <div class="grocery-actions">
+            <button class="add-btn" onclick="addToCart('Pasta', 120)">Add to Cart</button>
+            <button class="buy-btn" onclick="buyNow('Pasta', 120)">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="grocery-item">
+          <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&auto=format&fit=crop" alt="Milk">
+          <div class="grocery-name">Milk</div>
+          <div class="grocery-category-wrapper">
+              <div class="grocery-category">Dairy</div>
+          </div>
+          <div class="grocery-price">₹60</div>
+          <div class="grocery-actions">
+            <button class="add-btn" onclick="addToCart('Milk', 60)">Add to Cart</button>
+            <button class="buy-btn" onclick="buyNow('Milk', 60)">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="grocery-item">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop" alt="Bread">
+          <div class="grocery-name">Bread</div>
+          <div class="grocery-category-wrapper">
+              <div class="grocery-category">Bakery</div>
+          </div>
+          <div class="grocery-price">₹40</div>
+          <div class="grocery-actions">
+            <button class="add-btn" onclick="addToCart('Bread', 40)">Add to Cart</button>
+            <button class="buy-btn" onclick="buyNow('Bread', 40)">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="grocery-item">
+          <img src="https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400&auto=format&fit=crop" alt="Eggs">
+          <div class="grocery-name">Eggs</div>
+          <div class="grocery-category-wrapper">
+              <div class="grocery-category">Dairy</div>
+          </div>
+          <div class="grocery-price">₹120</div>
+          <div class="grocery-actions">
+            <button class="add-btn" onclick="addToCart('Eggs', 120)">Add to Cart</button>
+            <button class="buy-btn" onclick="buyNow('Eggs', 120)">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="grocery-item">
+          <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop" alt="Oil">
+          <div class="grocery-name">Cooking Oil</div>
+          <div class="grocery-category-wrapper">
+              <div class="grocery-category">Pantry</div>
+          </div>
+          <div class="grocery-price">₹220</div>
+          <div class="grocery-actions">
+            <button class="add-btn" onclick="addToCart('Cooking Oil', 220)">Add to Cart</button>
+            <button class="buy-btn" onclick="buyNow('Cooking Oil', 220)">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- slides moved to homepage -->
+
+    <!-- Mobile Section -->
+    <section class="mobile-section">
+      <h2>📱 Popular Mobiles</h2>
+      <div class="mobiles-grid">
+        <div class="mobile-item" style="position:relative;">
+          <div class="ribbon"><span class="badge">New</span></div>
+          <img src="https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=400&auto=format&fit=crop" alt="iPhone 14">
+          <h3>iPhone 14</h3>
+          <div class="mobile-price">₹79,900</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('iPhone 14', 79900)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('iPhone 14', 79900)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&auto=format&fit=crop" alt="Samsung S23">
+          <h3>Samsung S23</h3>
+          <div class="mobile-price">₹65,000</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('Samsung S23', 65000)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Samsung S23', 65000)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&auto=format&fit=crop" alt="Pixel 8">
+          <h3>Google Pixel 8</h3>
+          <div class="mobile-price">₹58,000</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('Google Pixel 8', 58000)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Google Pixel 8', 58000)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&auto=format&fit=crop" alt="OnePlus 11">
+          <h3>OnePlus 11</h3>
+          <div class="mobile-price">₹49,999</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('OnePlus 11', 49999)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('OnePlus 11', 49999)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400&auto=format&fit=crop" alt="Xiaomi 13">
+          <h3>Xiaomi 13</h3>
+          <div class="mobile-price">₹39,999</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('Xiaomi 13', 39999)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Xiaomi 13', 39999)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Watches Section -->
+    <section class="watch-section">
+      <h2>⌚ Popular Watches</h2>
+      <div class="mobiles-grid">
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400&auto=format&fit=crop" alt="Apple Watch">
+          <h3>Apple Watch Series</h3>
+          <div class="mobile-price">₹34,999</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('Apple Watch Series', 34999)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Apple Watch Series', 34999)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&auto=format&fit=crop" alt="Samsung Galaxy Watch">
+          <h3>Samsung Galaxy Watch</h3>
+          <div class="mobile-price">₹22,999</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('Samsung Galaxy Watch', 22999)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Samsung Galaxy Watch', 22999)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1510017803434-a899398421b3?w=400&auto=format&fit=crop" alt="Fitbit Versa">
+          <h3>Fitbit Versa</h3>
+          <div class="mobile-price">₹12,499</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('Fitbit Versa', 12499)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Fitbit Versa', 12499)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=400&auto=format&fit=crop" alt="Garmin Fenix">
+          <h3>Garmin Fenix</h3>
+          <div class="mobile-price">₹42,000</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('Garmin Fenix', 42000)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Garmin Fenix', 42000)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Books Section -->
+    <section class="book-section">
+      <h2>📚 Engineering Books</h2>
+      <div class="books-grid">
+        <div class="book-item">
+          <img src="https://images.unsplash.com/photo-1537495329792-41ae41ad3bf0?w=400&auto=format&fit=crop" alt="Mechanics of Machines">
+          <h3>Mechanics of Machines</h3>
+          <div class="book-author">by J. Smith</div>
+          <div class="book-price">₹450</div>
+          <div class="book-actions">
+            <button onclick="addToCart('Mechanics of Machines', 450)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Mechanics of Machines', 450)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="book-item">
+          <img src="https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?w=400&auto=format&fit=crop" alt="Fundamentals of Electrical Eng.">
+          <h3>Fundamentals of Electrical Eng.</h3>
+          <div class="book-author">by A. Kumar</div>
+          <div class="book-price">₹520</div>
+          <div class="book-actions">
+            <button onclick="addToCart('Fundamentals of Electrical Eng.', 520)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Fundamentals of Electrical Eng.', 520)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="book-item">
+          <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&auto=format&fit=crop" alt="Structural Engineering">
+          <h3>Structural Engineering</h3>
+          <div class="book-author">by L. Fernandez</div>
+          <div class="book-price">₹600</div>
+          <div class="book-actions">
+            <button onclick="addToCart('Structural Engineering', 600)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Structural Engineering', 600)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="book-item">
+          <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&auto=format&fit=crop" alt="Data Structures & Algorithms">
+          <h3>Data Structures & Algorithms</h3>
+          <div class="book-author">by R. Gupta</div>
+          <div class="book-price">₹480</div>
+          <div class="book-actions">
+            <button onclick="addToCart('Data Structures & Algorithms', 480)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Data Structures & Algorithms', 480)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="book-item">
+          <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&auto=format&fit=crop" alt="Chemical Process Eng.">
+          <h3>Chemical Process Eng.</h3>
+          <div class="book-author">by M. Patel</div>
+          <div class="book-price">₹530</div>
+          <div class="book-actions">
+            <button onclick="addToCart('Chemical Process Eng.', 530)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Chemical Process Eng.', 530)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gaming Laptops Section -->
+    <section class="gaming-section">
+      <h2>🎮 Gaming Laptops</h2>
+      <div class="gaming-grid">
+        <div class="gaming-item" style="position:relative;">
+          <div class="ribbon"><span class="badge">Hot</span></div>
+          <div class="product-image"><img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400&auto=format&fit=crop" alt="ROG Zephyrus G14"></div>
+          <h3>ASUS ROG Zephyrus G14</h3>
+          <ul class="specs">
+            <li>CPU: AMD Ryzen 9</li>
+            <li>GPU: NVIDIA RTX 3060</li>
+            <li>RAM: 16GB</li>
+            <li>Storage: 1TB SSD</li>
+            <li>Display: 14" QHD</li>
+          </ul>
+          <div class="price-tag">₹1,50,000</div>
+          <div class="product-actions">
+            <button onclick="addToCart('ASUS ROG Zephyrus G14', 150000)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('ASUS ROG Zephyrus G14', 150000)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="gaming-item">
+          <div class="product-image"><img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&auto=format&fit=crop" alt="Alienware x15 R2"></div>
+          <h3>Alienware x15 R2</h3>
+          <ul class="specs">
+            <li>CPU: Intel Core i7</li>
+            <li>GPU: NVIDIA RTX 3080</li>
+            <li>RAM: 32GB</li>
+            <li>Storage: 1TB SSD</li>
+            <li>Display: 15.6" QHD</li>
+          </ul>
+          <div class="price-tag">₹2,50,000</div>
+          <div class="product-actions">
+            <button onclick="addToCart('Alienware x15 R2', 250000)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Alienware x15 R2', 250000)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="gaming-item">
+          <div class="product-image"><img src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=400&auto=format&fit=crop" alt="Razer Blade 15"></div>
+          <h3>Razer Blade 15</h3>
+          <ul class="specs">
+            <li>CPU: Intel Core i7</li>
+            <li>GPU: NVIDIA RTX 3070</li>
+            <li>RAM: 16GB</li>
+            <li>Storage: 1TB SSD</li>
+            <li>Display: 15.6" FHD 240Hz</li>
+          </ul>
+          <div class="price-tag">₹2,00,000</div>
+          <div class="product-actions">
+            <button onclick="addToCart('Razer Blade 15', 200000)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Razer Blade 15', 200000)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="gaming-item">
+          <div class="product-image"><img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400&auto=format&fit=crop" alt="MSI GE76 Raider"></div>
+          <h3>MSI GE76 Raider</h3>
+          <ul class="specs">
+            <li>CPU: Intel Core i9</li>
+            <li>GPU: NVIDIA RTX 3080</li>
+            <li>RAM: 32GB</li>
+            <li>Storage: 2TB SSD</li>
+            <li>Display: 17.3" 4K</li>
+          </ul>
+          <div class="price-tag">₹2,70,000</div>
+          <div class="product-actions">
+            <button onclick="addToCart('MSI GE76 Raider', 270000)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('MSI GE76 Raider', 270000)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+
+        <div class="gaming-item">
+          <div class="product-image"><img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&auto=format&fit=crop" alt="Lenovo Legion 7"></div>
+          <h3>Lenovo Legion 7</h3>
+          <ul class="specs">
+            <li>CPU: AMD Ryzen 9</li>
+            <li>GPU: NVIDIA RTX 3070</li>
+            <li>RAM: 16GB</li>
+            <li>Storage: 1TB SSD</li>
+            <li>Display: 16" QHD</li>
+          </ul>
+          <div class="price-tag">₹1,80,000</div>
+          <div class="product-actions">
+            <button onclick="addToCart('Lenovo Legion 7', 180000)" class="add-btn">Add to Cart</button>
+            <button onclick="buyNow('Lenovo Legion 7', 180000)" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="products-grid">
+      <!-- Electronics Category -->
+      <div class="product-detail" style="position:relative;">
+        <div class="ribbon"><span class="badge">Featured</span></div>
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&auto=format&fit=crop" alt="Laptop"></div>
+        <h3>Premium Gaming Laptop</h3>
+        <p>High-performance laptop perfect for gaming and professional work.</p>
+        <div class="price-tag">₹15,000</div>
+        <button onclick="addToCart('Premium Gaming Laptop', 15000)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&auto=format&fit=crop" alt="Mouse"></div>
+        <h3>Wireless Gaming Mouse</h3>
+        <p>Ergonomic wireless mouse with RGB lighting and precision tracking.</p>
+        <div class="price-tag">₹250</div>
+        <button onclick="addToCart('Wireless Gaming Mouse', 250)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&auto=format&fit=crop" alt="Headphones"></div>
+        <h3>Noise-Cancelling Headphones</h3>
+        <p>Premium audio quality with active noise cancellation technology.</p>
+        <div class="price-tag">₹200</div>
+        <button onclick="addToCart('Noise-Cancelling Headphones', 200)">Add to Cart</button>
+      </div>
+
+      <!-- Additional Products -->
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&auto=format&fit=crop" alt="Phone"></div>
+        <h3>Smartphone Pro</h3>
+        <p>Latest flagship smartphone with advanced camera and 5G connectivity.</p>
+        <div class="price-tag">₹25,000</div>
+        <button onclick="addToCart('Smartphone Pro', 25000)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400&auto=format&fit=crop" alt="Watch"></div>
+        <h3>Smart Fitness Watch</h3>
+        <p>Track your health and fitness with this advanced smartwatch.</p>
+        <div class="price-tag">₹3,500</div>
+        <button onclick="addToCart('Smart Fitness Watch', 3500)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=400&auto=format&fit=crop" alt="Controller"></div>
+        <h3>Wireless Game Controller</h3>
+        <p>Professional gaming controller with haptic feedback and precision controls.</p>
+        <div class="price-tag">₹1,200</div>
+        <button onclick="addToCart('Wireless Game Controller', 1200)">Add to Cart</button>
+      </div>
+
+      <!-- New Products -->
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&auto=format&fit=crop" alt="Tablet"></div>
+        <h3>10" Pro Tablet</h3>
+        <p>Lightweight tablet with vivid display and long battery life.</p>
+        <div class="price-tag">₹18,500</div>
+        <button onclick="addToCart('10in Pro Tablet', 18500)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&auto=format&fit=crop" alt="Speaker"></div>
+        <h3>Bluetooth Speaker</h3>
+        <p>Portable speaker with deep bass and 12-hour playback.</p>
+        <div class="price-tag">₹2,800</div>
+        <button onclick="addToCart('Bluetooth Speaker', 2800)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&auto=format&fit=crop" alt="Camera"></div>
+        <h3>DSLR Camera</h3>
+        <p>High-resolution DSLR for professional photography.</p>
+        <div class="price-tag">₹45,000</div>
+        <button onclick="addToCart('DSLR Camera', 45000)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&auto=format&fit=crop" alt="Keyboard"></div>
+        <h3>Mechanical Keyboard</h3>
+        <p>RGB mechanical keyboard with hot-swappable switches.</p>
+        <div class="price-tag">₹4,200</div>
+        <button onclick="addToCart('Mechanical Keyboard', 4200)">Add to Cart</button>
+      </div>
+
+      <!-- Useful Products -->
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&auto=format&fit=crop" alt="Power Bank"></div>
+        <h3>Power Bank</h3>
+        <p>10000mAh fast-charge power bank to keep devices running.</p>
+        <div class="price-tag">₹1,500</div>
+        <button onclick="addToCart('Power Bank', 1500)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&auto=format&fit=crop" alt="USB-C Cable"></div>
+        <h3>USB-C Cable</h3>
+        <p>Durable braided USB-C cable for charging and data transfer.</p>
+        <div class="price-tag">₹350</div>
+        <button onclick="addToCart('USB-C Cable', 350)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400&auto=format&fit=crop" alt="Wall Charger"></div>
+        <h3>Fast Wall Charger</h3>
+        <p>GaN 65W fast wall charger with multiple ports.</p>
+        <div class="price-tag">₹1,200</div>
+        <button onclick="addToCart('Fast Wall Charger', 1200)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&auto=format&fit=crop" alt="Portable SSD"></div>
+        <h3>Portable SSD</h3>
+        <p>1TB portable SSD — fast, compact, and reliable storage.</p>
+        <div class="price-tag">₹8,500</div>
+        <button onclick="addToCart('Portable SSD', 8500)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&auto=format&fit=crop" alt="Laptop Sleeve"></div>
+        <h3>Laptop Sleeve</h3>
+        <p>Padded laptop sleeve for protection during travel.</p>
+        <div class="price-tag">₹900</div>
+        <button onclick="addToCart('Laptop Sleeve', 900)">Add to Cart</button>
+      </div>
+
+      <div class="product-detail">
+        <div class="product-image"><img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&auto=format&fit=crop" alt="Water Bottle"></div>
+        <h3>Water Bottle</h3>
+        <p>Insulated reusable water bottle to stay hydrated.</p>
+        <div class="price-tag">₹700</div>
+        <button onclick="addToCart('Water Bottle', 700)">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function convertCurrency() {
+      const amount = document.getElementById('conv-amount').value;
+      const to = document.getElementById('conv-to').value;
+      const result = document.getElementById('conv-result');
+
+      if (!amount || amount <= 0) {
+        result.innerHTML = '<span style="color:#e74c3c">Please enter a valid amount.</span>';
+        return;
+      }
+
+      result.innerHTML = 'Converting...';
+      try {
+        const res = await fetch(`/convert?amount=${amount}&to=${to}`);
+        const data = await res.json();
+        if (data.error) {
+          result.innerHTML = `<span style="color:#e74c3c">${data.error}</span>`;
+        } else {
+          result.innerHTML = `₹${parseFloat(data.amount).toLocaleString()} = <strong>${data.symbol}${parseFloat(data.converted).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})} ${data.to}</strong>`;
+        }
+      } catch (e) {
+        result.innerHTML = '<span style="color:#e74c3c">Java server not running. Start CurrencyServer first.</span>';
+      }
+    }
+
+    function addToCart(productName, price) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingItem = cart.find(item => item.name === productName);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ name: productName, price: price, quantity: 1 });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      // Add animation effect
+      const button = event.target;
+      button.style.transform = 'scale(0.95)';
+      button.innerHTML = '✅ Added!';
+
+      setTimeout(() => {
+        button.style.transform = 'scale(1)';
+        button.innerHTML = 'Add to Cart';
+      }, 1000);
+
+      alert(`🎉 ${productName} added to cart for ₹${price.toLocaleString()}!`);
+    }
+
+    // Buy now: open payment modal (select COD or Card)
+    let currentPurchase = null;
+    function buyNow(productName, price) {
+      currentPurchase = { name: productName, price: price };
+      document.getElementById('pay-product').textContent = `${productName} — ₹${price.toLocaleString()}`;
+      document.getElementById('payment-modal').style.display = 'block';
+    }
+
+    function closePaymentModal() {
+      document.getElementById('payment-modal').style.display = 'none';
+      // reset card fields
+      document.getElementById('card-form').reset();
+      document.getElementById('card-fields').style.display = 'none';
+    }
+
+    // toggle card fields when payment method changes
+    function onPaymentMethodChange() {
+      const method = document.querySelector('input[name="pay-method"]:checked').value;
+      document.getElementById('card-fields').style.display = method === 'card' ? 'block' : 'none';
+    }
+
+    function submitPayment() {
+      const method = document.querySelector('input[name="pay-method"]:checked').value;
+      if (!currentPurchase) {
+        alert('No product selected.');
+        return;
+      }
+
+      if (method === 'cod') {
+        // Cash on delivery: add to cart and confirm order
+        addToCart(currentPurchase.name, currentPurchase.price);
+        closePaymentModal();
+        alert(`Order placed (Cash on Delivery) for ${currentPurchase.name} — ₹${currentPurchase.price.toLocaleString()}!`);
+        window.location.href = "{{ url_for('card_page') }}";
+        return;
+      }
+
+      // Card payment - basic validation (mock)
+      const cardNumber = document.getElementById('card-number').value.replace(/\s+/g, '');
+      const nameOnCard = document.getElementById('card-name').value.trim();
+      const expiry = document.getElementById('card-expiry').value.trim();
+      const cvv = document.getElementById('card-cvv').value.trim();
+
+      if (cardNumber.length < 12 || nameOnCard.length < 2 || expiry.length < 4 || cvv.length < 3) {
+        alert('Please enter valid card details (this is a mock payment).');
+        return;
+      }
+
+      // Mock successful payment
+      addToCart(currentPurchase.name, currentPurchase.price);
+      closePaymentModal();
+      alert(`Payment successful for ${currentPurchase.name} — ₹${currentPurchase.price.toLocaleString()}!`);
+      window.location.href = "{{ url_for('card_page') }}";
+    }
+  </script>
+  <script>
+    // carousels moved to homepage
+    (function () {
+      const track = document.querySelector('.carousel-track');
+      const prev = document.querySelector('.carousel-prev');
+      const next = document.querySelector('.carousel-next');
+      if (!track || !prev || !next) return;
+
+      const slides = Array.from(track.children);
+      let slideIndex = 0;
+
+      function update() {
+        const gap = 12; // matches CSS gap
+        const slideWidth = slides[0].getBoundingClientRect().width + gap;
+        track.style.transform = `translateX(-${slideIndex * slideWidth}px)`;
+      }
+
+      prev.addEventListener('click', () => {
+        slideIndex = Math.max(0, slideIndex - 1);
+        update();
+      });
+
+      next.addEventListener('click', () => {
+        slideIndex = Math.min(slides.length - 1, slideIndex + 1);
+        update();
+      });
+
+      // autoplay
+      let autoplay = setInterval(() => {
+        slideIndex = (slideIndex + 1) % slides.length;
+        update();
+      }, 4000);
+
+      // pause on hover
+      const carousel = document.querySelector('.carousel');
+      carousel.addEventListener('mouseenter', () => clearInterval(autoplay));
+      carousel.addEventListener('mouseleave', () => {
+        autoplay = setInterval(() => {
+          slideIndex = (slideIndex + 1) % slides.length;
+          update();
+        }, 4000);
+      });
+
+      window.addEventListener('resize', update);
+      // initial layout
+      setTimeout(update, 50);
+    })();
+  </script>
+
+  <!-- Payment Modal -->
+  <div id="payment-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" onclick="closePaymentModal()">&times;</span>
+      <h3>Complete Payment</h3>
+      <p id="pay-product"></p>
+
+      <form id="card-form" onsubmit="event.preventDefault(); submitPayment();">
+        <div class="pay-methods">
+          <label><input type="radio" name="pay-method" value="cod" checked onchange="onPaymentMethodChange()"> Cash on
+            Delivery</label>
+          <label><input type="radio" name="pay-method" value="card" onchange="onPaymentMethodChange()"> Credit / Debit
+            Card</label>
+        </div>
+
+        <div id="card-fields" style="display:none; margin-top:12px;">
+          <div><input id="card-number" placeholder="Card number" required></div>
+          <div><input id="card-name" placeholder="Name on card" required></div>
+          <div style="display:flex; gap:8px;"><input id="card-expiry" placeholder="MM/YY" style="flex:1" required><input
+              id="card-cvv" placeholder="CVV" style="width:90px" required></div>
+        </div>
+
+        <div style="margin-top:12px; text-align:center;">
+          <button type="button" onclick="submitPayment()" class="buy-btn">Confirm Payment</button>
+          <button type="button" onclick="closePaymentModal()" style="margin-left:8px;" class="add-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

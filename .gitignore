@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+env/
+
+# Database — contains user passwords, never push this
+instance/
+*.db
+*.sqlite3
+
+# Java compiled files
+java-api/*.class
+
+# OS files
+.DS_Store
+Thumbs.db

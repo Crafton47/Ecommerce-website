@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🛒 Vibrant E-Commerce Store</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('home_page') }}">Home</a></li>
+      <li><a href="{{ url_for('product_page') }}">Products</a></li>
+      <li><a href="{{ url_for('card_page') }}">Cart</a></li>
+      {% if user %}
+        <li><span style="color:white; font-weight:bold; padding: 10px 20px;">👋 {{ user }}</span></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+      {% else %}
+        <li><a href="{{ url_for('login_page') }}">Login</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <div class="container">
+    <!-- Hero with Interactive Accordion -->
+    <section class="hero-accordion-section">
+      <div class="hero-text">
+        <div class="promo-strip">🔥 Free shipping on orders over <strong>₹999</strong> • Use code <em>VIBRANT10</em></div>
+        <h1 class="pulse">Welcome to Vibrant E-Commerce</h1>
+        <p>Discover top deals on electronics, mobiles, books, groceries and more — handpicked just for you.</p>
+        <div class="search-bar">
+          <input type="search" id="hero-search" placeholder="Search products, brands or categories...">
+          <button class="cta-btn" onclick="location.href='{{ url_for('product_page') }}'">Search</button>
+        </div>
+        <div class="hero-ctas">
+          <a href="{{ url_for('product_page') }}" class="cta-btn">Shop Now</a>
+          <a href="{{ url_for('product_page') }}" class="cta-outline">Explore Categories</a>
+        </div>
+      </div>
+
+      <div class="accordion-wrap">
+        <div class="acc-item active" data-label="📱 Mobiles" data-href="{{ url_for('product_page') }}"
+          style="--img:url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop')">
+          <span class="acc-label">📱 Mobiles</span>
+          <span class="acc-cta">Shop Now →</span>
+        </div>
+        <div class="acc-item" data-label="💻 Laptops" data-href="{{ url_for('product_page') }}"
+          style="--img:url('https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&auto=format&fit=crop')">
+          <span class="acc-label">💻 Laptops</span>
+          <span class="acc-cta">Shop Now →</span>
+        </div>
+        <div class="acc-item" data-label="⌚ Watches" data-href="{{ url_for('product_page') }}"
+          style="--img:url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop')">
+          <span class="acc-label">⌚ Watches</span>
+          <span class="acc-cta">Shop Now →</span>
+        </div>
+        <div class="acc-item" data-label="📚 Books" data-href="{{ url_for('product_page') }}"
+          style="--img:url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&auto=format&fit=crop')">
+          <span class="acc-label">📚 Books</span>
+          <span class="acc-cta">Shop Now →</span>
+        </div>
+        <div class="acc-item" data-label="🛒 Grocery" data-href="{{ url_for('product_page') }}"
+          style="--img:url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop')">
+          <span class="acc-label">🛒 Grocery</span>
+          <span class="acc-cta">Shop Now →</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured / Product Listing -->
+    <h2>🛍️ Available Products</h2>
+
+    <!-- Featured categories -->
+    <section class="featured-cats">
+      <div class="featured-grid">
+        <div class="featured-card">
+          <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&auto=format&fit=crop" alt="Mobiles">
+          <h4>Mobiles</h4>
+        </div>
+        <div class="featured-card">
+          <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=300&auto=format&fit=crop" alt="Books">
+          <h4>Engineering Books</h4>
+        </div>
+        <div class="featured-card">
+          <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=300&auto=format&fit=crop" alt="Grocery">
+          <h4>Grocery</h4>
+        </div>
+        <div class="featured-card">
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&auto=format&fit=crop" alt="Watches">
+          <h4>Watches</h4>
+        </div>
+      </div>
+    </section>
+    <div class="products-grid">
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&auto=format&fit=crop" alt="Laptop" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:12px">
+        <h3>💻 Laptop</h3>
+        <p>Price: ₹15,000</p>
+        <button onclick="addToCart('Laptop', 15000)">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&auto=format&fit=crop" alt="Mouse" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:12px">
+        <h3>🖱️ Mouse</h3>
+        <p>Price: ₹250</p>
+        <button onclick="addToCart('Mouse', 250)">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&auto=format&fit=crop" alt="Headphones" style="width:100%;height:160px;object-fit:cover;border-radius:12px;margin-bottom:12px">
+        <h3>🎧 Headphones</h3>
+        <p>Price: ₹200</p>
+        <button onclick="addToCart('Headphones', 200)">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- Phones Section -->
+    <section class="mobile-section">
+      <h2>📱 Available Phones</h2>
+      <div class="mobiles-grid">
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=400&auto=format&fit=crop" alt="iPhone 14">
+          <h3>iPhone 14</h3>
+          <div class="mobile-price">₹79,900</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('iPhone 14', 79900)" class="add-btn">Add to Cart</button>
+          </div>
+        </div>
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&auto=format&fit=crop" alt="Samsung S23">
+          <h3>Samsung S23</h3>
+          <div class="mobile-price">₹65,000</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('Samsung S23', 65000)" class="add-btn">Add to Cart</button>
+          </div>
+        </div>
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400&auto=format&fit=crop" alt="Pixel 8">
+          <h3>Google Pixel 8</h3>
+          <div class="mobile-price">₹58,000</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('Google Pixel 8', 58000)" class="add-btn">Add to Cart</button>
+          </div>
+        </div>
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=400&auto=format&fit=crop" alt="OnePlus 11">
+          <h3>OnePlus 11</h3>
+          <div class="mobile-price">₹49,999</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('OnePlus 11', 49999)" class="add-btn">Add to Cart</button>
+          </div>
+        </div>
+        <div class="mobile-item">
+          <img src="https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=400&auto=format&fit=crop" alt="Xiaomi 13">
+          <h3>Xiaomi 13</h3>
+          <div class="mobile-price">₹39,999</div>
+          <div class="mobile-actions">
+            <button onclick="addToCart('Xiaomi 13', 39999)" class="add-btn">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Books Section -->
+    <section class="book-section">
+      <h2>📚 Available Books</h2>
+      <div class="books-grid">
+        <div class="book-item">
+          <img src="https://images.unsplash.com/photo-1537495329792-41ae41ad3bf0?w=400&auto=format&fit=crop" alt="Mechanics of Machines">
+          <h3>Mechanics of Machines</h3>
+          <div class="book-author">by J. Smith</div>
+          <div class="book-price">₹450</div>
+          <div class="book-actions">
+            <button onclick="addToCart('Mechanics of Machines', 450)" class="add-btn">Add to Cart</button>
+          </div>
+        </div>
+        <div class="book-item">
+          <img src="https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?w=400&auto=format&fit=crop" alt="Fundamentals of Electrical Eng.">
+          <h3>Fundamentals of Electrical Eng.</h3>
+          <div class="book-author">by A. Kumar</div>
+          <div class="book-price">₹520</div>
+          <div class="book-actions">
+            <button onclick="addToCart('Fundamentals of Electrical Eng.', 520)" class="add-btn">Add to Cart</button>
+          </div>
+        </div>
+        <div class="book-item">
+          <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&auto=format&fit=crop" alt="Data Structures">
+          <h3>Data Structures & Algorithms</h3>
+          <div class="book-author">by R. Gupta</div>
+          <div class="book-price">₹480</div>
+          <div class="book-actions">
+            <button onclick="addToCart('Data Structures & Algorithms', 480)" class="add-btn">Add to Cart</button>
+          </div>
+        </div>
+        <div class="book-item">
+          <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&auto=format&fit=crop" alt="Chemical Process Eng.">
+          <h3>Chemical Process Eng.</h3>
+          <div class="book-author">by M. Patel</div>
+          <div class="book-price">₹530</div>
+          <div class="book-actions">
+            <button onclick="addToCart('Chemical Process Eng.', 530)" class="add-btn">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  </div>
+
+  <script>
+    // Interactive accordion with auto-roll and click navigation
+    const accItems = document.querySelectorAll('.acc-item');
+    let autoRoll;
+    let current = 0;
+
+    function setActive(index) {
+      accItems.forEach(i => i.classList.remove('active'));
+      accItems[index].classList.add('active');
+      current = index;
+    }
+
+    function startAutoRoll() {
+      autoRoll = setInterval(() => {
+        current = (current + 1) % accItems.length;
+        setActive(current);
+      }, 2500);
+    }
+
+    function stopAutoRoll() {
+      clearInterval(autoRoll);
+    }
+
+    // hover — pause auto roll and expand hovered panel
+    accItems.forEach((item, index) => {
+      item.addEventListener('mouseenter', () => {
+        stopAutoRoll();
+        setActive(index);
+      });
+      item.addEventListener('mouseleave', () => {
+        startAutoRoll();
+      });
+      // click — navigate to products page
+      item.addEventListener('click', () => {
+        window.location.href = item.dataset.href;
+      });
+    });
+
+    // start rolling on load
+    startAutoRoll();
+
+    function addToCart(productName, price) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingItem = cart.find(item => item.name === productName);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ name: productName, price: price, quantity: 1 });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(`${productName} added to cart for ₹${price.toLocaleString()}!`);
+    }
+
+    // Chatbot widget logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const chatToggleBtn = document.getElementById('chat-toggle-btn');
+      const chatWindow = document.getElementById('chat-window');
+      const chatCloseBtn = document.getElementById('chat-close-btn');
+      const chatBody = document.getElementById('chat-body');
+      const chatForm = document.getElementById('chat-form');
+      const chatInput = document.getElementById('chat-input');
+
+      function appendMessage(text, sender = 'bot') {
+        const msg = document.createElement('div');
+        msg.className = `chat-msg ${sender}`;
+        msg.textContent = text;
+        chatBody.appendChild(msg);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      function setTyping(show) {
+        let typing = document.getElementById('chat-typing');
+        if (show) {
+          if (!typing) {
+            typing = document.createElement('div');
+            typing.id = 'chat-typing';
+            typing.className = 'chat-typing';
+            typing.textContent = 'Assistant is typing...';
+            chatBody.appendChild(typing);
+          }
+        } else if (typing) {
+          typing.remove();
+        }
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      chatToggleBtn.addEventListener('click', () => {
+        chatWindow.classList.toggle('open');
+        if (chatWindow.classList.contains('open')) {
+          chatInput.focus();
+        }
+      });
+
+      chatCloseBtn.addEventListener('click', () => {
+        chatWindow.classList.remove('open');
+      });
+
+      chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        appendMessage(message, 'user');
+        chatInput.value = '';
+        setTyping(true);
+
+        try {
+          const response = await fetch('/chatbot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message })
+          });
+
+          const data = await response.json();
+          setTyping(false);
+          appendMessage(data.reply || 'Sorry, I could not process that right now.', 'bot');
+        } catch (error) {
+          setTyping(false);
+          appendMessage('Sorry, chatbot is currently unavailable. Please try again.', 'bot');
+        }
+      });
+    });
+  </script>
+
+  <div class="chatbot-widget">
+    <button id="chat-toggle-btn" class="chat-toggle-btn" aria-label="Open chat assistant">💬 Help</button>
+
+    <div id="chat-window" class="chat-window" role="dialog" aria-label="Chat assistant">
+      <div class="chat-header">
+        <span>Vibrant Assistant</span>
+        <button id="chat-close-btn" class="chat-close-btn" aria-label="Close chat">✕</button>
+      </div>
+
+      <div id="chat-body" class="chat-body">
+        <div class="chat-msg bot">Hi! 👋 I’m your assistant. Ask me about login, products, cart, payment, or orders.</div>
+      </div>
+
+      <form id="chat-form" class="chat-form">
+        <input id="chat-input" type="text" placeholder="Type your question..." autocomplete="off" required>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
